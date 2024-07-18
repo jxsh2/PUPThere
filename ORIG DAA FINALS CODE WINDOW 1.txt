@@ -1,0 +1,367 @@
+
+Imports Microsoft.Web.WebView2
+Imports System.Net.NetworkInformation
+Imports System.Reflection.Metadata
+Imports System.Windows.Automation
+
+Public Class Form1
+    Private g As Graph
+    Private shortestPath As List(Of String)
+    Private totalDistance As Integer
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Initialize the graph
+        'VERTICES
+        g = New Graph()
+        g.AddVertex("MAIN GATE")
+        g.AddVertex("VISITOR INFORMATION CENTER")
+        g.AddVertex("TENNIS COURT")
+        g.AddVertex("OUTDOOR COURT")
+        g.AddVertex("GYM")
+        g.AddVertex("SWIMMING POOL")
+        g.AddVertex("GAZEBO")
+        g.AddVertex("MABINI MONUMENT")
+        g.AddVertex("MABINI SHRINE")
+        g.AddVertex("PUP SOUVENIR")
+        g.AddVertex("FREEDOM PARK")
+        g.AddVertex("FLAGPOLE")
+        g.AddVertex("GRANDSTAND")
+        g.AddVertex("COMMUNITY BUILDING")
+        g.AddVertex("OVAL")
+        g.AddVertex("CHAPEL")
+        g.AddVertex("NUTRITION AND FOOD SCIENCE BUILDING")
+        g.AddVertex("EAST WING")
+        g.AddVertex("CAMPUS DEVELOPMENT AND MAINTENANCE BUILDING")
+        g.AddVertex("PUP STA. MESA FERRY")
+        g.AddVertex("GENERATOR FACILITY")
+        g.AddVertex("SOUTH WING")
+        g.AddVertex("WEST WING")
+        g.AddVertex("MAIN BUILDING")
+        g.AddVertex("CANTEEN SAMPAGUITA BLDG")
+        g.AddVertex("STUDENT CANTEEN")
+        g.AddVertex("CHARLIE DEL ROSARIO HALL")
+        g.AddVertex("LABORATORY HS")
+        g.AddVertex("PRINTING PRESS BLDG")
+        g.AddVertex("PROPERTY BLDG")
+        g.AddVertex("WATER PUMP FACILITY")
+        g.AddVertex("UNDERGROUND TANK")
+        g.AddVertex("OVERHEAD TANK")
+        g.AddVertex("NINOY A. LIBRARY")
+        g.AddVertex("LAGOON")
+        g.AddVertex("AMPHITHEATRE")
+        g.AddVertex("PE BUILDING")
+        g.AddVertex("TAHANAN NG ALUMNI")
+
+        ' EDGES
+        g.AddEdge("MAIN GATE", "VISITOR INFORMATION CENTER", 37)
+        g.AddEdge("MAIN GATE", "OVAL", 79)
+        g.AddEdge("MAIN GATE", "COMMUNITY BUILDING", 255)
+        g.AddEdge("OVAL", "COMMUNITY BUILDING", 100)
+        g.AddEdge("OVAL", "VISITOR INFORMATION CENTER", 75)
+        g.AddEdge("OVAL", "GRANDSTAND", 54)
+        g.AddEdge("OVAL", "CHAPEL", 400)
+        g.AddEdge("GRANDSTAND", "CHAPEL", 170)
+        g.AddEdge("GRANDSTAND", "VISITOR INFORMATION CENTER", 120)
+        g.AddEdge("VISITOR INFORMATION CENTER", "TENNIS COURT", 76)
+        g.AddEdge("VISITOR INFORMATION CENTER", "GYM", 120)
+        g.AddEdge("TENNIS COURT", "GYM", 110)
+        g.AddEdge("VISITOR INFORMATION CENTER", "GAZEBO", 70)
+        g.AddEdge("CHAPEL", "NUTRITION AND FOOD SCIENCE BUILDING", 70)
+        g.AddEdge("CHAPEL", "MAIN BUILDING", 38)
+        g.AddEdge("CHAPEL", "EAST WING", 42)
+        g.AddEdge("CHAPEL", "FLAGPOLE", 66)
+        g.AddEdge("MABINI SHRINE", "FLAGPOLE", 20)
+        g.AddEdge("MABINI SHRINE", "FREEDOM PARK", 25)
+        g.AddEdge("MABINI SHRINE", "MABINI MONUMENT", 230)
+        g.AddEdge("MABINI SHRINE", "GAZEBO", 55)
+        g.AddEdge("NUTRITION AND FOOD SCIENCE BUILDING", "CAMPUS DEVELOPMENT AND MAINTENANCE BUILDING", 70)
+        g.AddEdge("NUTRITION AND FOOD SCIENCE BUILDING", "EAST WING", 40)
+        g.AddEdge("CAMPUS DEVELOPMENT AND MAINTENANCE BUILDING", "GENERATOR FACILITY", 60)
+        g.AddEdge("CAMPUS DEVELOPMENT AND MAINTENANCE BUILDING", "PUP STA. MESA FERRY", 50)
+        g.AddEdge("CAMPUS DEVELOPMENT AND MAINTENANCE BUILDING", "EAST WING", 27)
+        g.AddEdge("EAST WING", "MAIN BUILDING", 62)
+        g.AddEdge("PUP STA. MESA FERRY", "GENERATOR FACILITY", 20)
+        g.AddEdge("GENERATOR FACILITY", "SOUTH WING", 5)
+        g.AddEdge("MAIN BUILDING", "WEST WING", 42)
+        g.AddEdge("MAIN BUILDING", "SOUTH WING", 71)
+        g.AddEdge("SOUTH WING", "CANTEEN SAMPAGUITA BLDG", 94)
+        g.AddEdge("FLAGPOLE", "FREEDOM PARK", 20)
+        g.AddEdge("CANTEEN SAMPAGUITA BLDG", "WEST WING", 16)
+        g.AddEdge("CANTEEN SAMPAGUITA BLDG", "STUDENT CANTEEN", 34)
+        g.AddEdge("WEST WING", "STUDENT CANTEEN", 50)
+        g.AddEdge("STUDENT CANTEEN", "AMPHITHEATRE", 56)
+        g.AddEdge("STUDENT CANTEEN", "NINOY A. LIBRARY", 52)
+        g.AddEdge("STUDENT CANTEEN", "CHARLIE DEL ROSARIO HALL", 33)
+        g.AddEdge("CHARLIE DEL ROSARIO HALL", "NINOY A. LIBRARY", 19)
+        g.AddEdge("CHARLIE DEL ROSARIO HALL", "OVERHEAD TANK", 21)
+        g.AddEdge("CHARLIE DEL ROSARIO HALL", "LABORATORY HS", 26)
+        g.AddEdge("LABORATORY HS", "OVERHEAD TANK", 37)
+        g.AddEdge("LABORATORY HS", "UNDERGROUND TANK", 37)
+        g.AddEdge("UNDERGROUND TANK", "OVERHEAD TANK", 20)
+        g.AddEdge("UNDERGROUND TANK", "WATER PUMP FACILITY", 10)
+        g.AddEdge("WATER PUMP FACILITY", "PROPERTY BLDG", 0)
+        g.AddEdge("PROPERTY BLDG", "PRINTING PRESS BLDG", 20)
+        g.AddEdge("OVERHEAD TANK", "NINOY A. LIBRARY", 30)
+        g.AddEdge("NINOY A. LIBRARY", "AMPHITHEATRE", 110)
+        g.AddEdge("AMPHITHEATRE", "LAGOON", 59)
+        g.AddEdge("AMPHITHEATRE", "MAIN BUILDING", 10)
+        g.AddEdge("LAGOON", "MABINI MONUMENT", 69)
+        g.AddEdge("LAGOON", "FREEDOM PARK", 89)
+        g.AddEdge("FREEDOM PARK", "MABINI MONUMENT", 36)
+        g.AddEdge("MABINI MONUMENT", "NINOY A. LIBRARY", 230)
+        g.AddEdge("MABINI MONUMENT", "PE BUILDING", 120)
+        g.AddEdge("MABINI MONUMENT", "TAHANAN NG ALUMNI", 120)
+        g.AddEdge("MABINI MONUMENT", "GAZEBO", 170)
+        g.AddEdge("PE BUILDING", "TAHANAN NG ALUMNI", 10)
+        g.AddEdge("TAHANAN NG ALUMNI", "SWIMMING POOL", 50)
+        g.AddEdge("SWIMMING POOL", "OUTDOOR COURT", 52)
+        g.AddEdge("SWIMMING POOL", "GYM", 112)
+        g.AddEdge("OUTDOOR COURT", "GYM", 108)
+        g.AddEdge("OUTDOOR COURT", "TENNIS COURT", 10)
+        g.AddEdge("OUTDOOR COURT", "GAZEBO", 64)
+        g.AddEdge("GAZEBO", "TENNIS COURT", 39)
+
+
+        ' Populate the comboboxes with vertex names
+        For Each vertex As String In g.VerticesList
+            startcbox.Items.Add(vertex)
+            destcbox.Items.Add(vertex)
+        Next
+
+    End Sub
+    Private Sub mapbtn_Click(sender As Object, e As EventArgs) Handles mapbtn.Click
+        Form2.Show()
+    End Sub
+    Private Sub hlpbtn_Click(sender As Object, e As EventArgs) Handles hlpbtn.Click
+        Form3.Show()
+    End Sub
+    Private Sub closebtn_Click(sender As Object, e As EventArgs) Handles closebtn.Click
+        Dim result As DialogResult = MessageBox.Show("Are you sure you want to exit?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
+        If result = DialogResult.Yes Then
+            Me.Close()
+        End If
+
+    End Sub
+    Private Sub rstbtn_Click(ByVal sender As Object, ByVal e As EventArgs) Handles rstbtn.Click
+        Dim result As DialogResult = MessageBox.Show("This action will clear all fields. Do you want to continue?", "Clear All Fields", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
+        If result = DialogResult.Yes Then
+            startcbox.Text = "--SELECT--"
+            destcbox.Text = "--SELECT--"
+            rtxtresult.Text = ""
+        End If
+
+    End Sub
+
+    Private Sub startcbox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles startcbox.SelectedIndexChanged
+        Dim selectedVertex As String = startcbox.SelectedItem.ToString()
+
+        If Not g.VerticesList.Contains(selectedVertex) Then
+            MessageBox.Show(selectedVertex & " is not available.", "Invalid", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        End If
+
+    End Sub
+
+    Private Sub destcbox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles destcbox.SelectedIndexChanged
+        Dim selectedVertex As String = destcbox.SelectedItem.ToString()
+
+        If Not g.VerticesList.Contains(selectedVertex) Then
+            MessageBox.Show(selectedVertex & " is not available.", "Invalid ", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        End If
+
+    End Sub
+    Private Sub entbtn_Click(sender As Object, e As EventArgs) Handles entbtn.Click
+        Dim startVertex As String = If(startcbox.SelectedItem IsNot Nothing, startcbox.SelectedItem.ToString(), "")
+        Dim endVertex As String = If(destcbox.SelectedItem IsNot Nothing, destcbox.SelectedItem.ToString(), "")
+
+        If String.IsNullOrWhiteSpace(startVertex) OrElse String.IsNullOrWhiteSpace(endVertex) Then
+            MessageBox.Show("Please select valid start and destination locations.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+
+        Dim result As (List(Of String), Integer) = g.FindShortestPath(startVertex, endVertex)
+        shortestPath = result.Item1
+        totalDistance = result.Item2
+
+        If totalDistance > 0 Then
+            Dim pathString As String = String.Join(" -> ", shortestPath.ToArray())
+            Dim distanceString As String = totalDistance.ToString() & "m"
+            rtxtresult.Text = "Shortest Path: " & pathString & vbCrLf & "Total Distance: " & distanceString
+        Else
+            rtxtresult.Text = "No path found between the selected locations."
+        End If
+    End Sub
+End Class
+
+Public Class Graph
+    Private vertices As Dictionary(Of String, Dictionary(Of String, Integer))
+
+    Public Sub New()
+        vertices = New Dictionary(Of String, Dictionary(Of String, Integer))()
+    End Sub
+
+    Public ReadOnly Property VerticesList As List(Of String)
+        Get
+            Return vertices.Keys.ToList()
+        End Get
+    End Property
+
+    Public Sub AddVertex(vertex As String)
+        vertices.Add(vertex, New Dictionary(Of String, Integer)())
+    End Sub
+
+    Public Sub AddEdge(source As String, destination As String, distance As Integer)
+        vertices(source).Add(destination, distance)
+        vertices(destination).Add(source, distance)
+    End Sub
+    Private Function GetVertexCoordinates(vertex As String) As (x As Double, y As Double)
+
+        Select Case vertex
+            Case "MAIN GATE"
+                Return (14.599247002175685, 121.0118226804876)
+            Case "VISITOR INFORMATION CENTER"
+                Return (14.599113328370299, 121.01155043629768)
+            Case "TENNIS COURT"
+                Return (14.598880372367811, 121.01120443135518)
+            Case "OVERHEAD TANK"
+                Return (14.597771645693348, 121.00925976069443)
+            Case "OUTDOOR COURT"
+                Return (14.598657699299286, 121.01083281099157)
+            Case "SWIMMING POOL"
+                Return (14.598856263689573, 121.01032050907102)
+            Case "GAZEBO"
+                Return (14.598609921996472, 121.01136218964184)
+            Case "MABINI MONUMENT"
+                Return (14.598007738582087, 121.01111676752241)
+            Case "MABINI SHRINE"
+                Return (14.598044077283136, 121.01127501785079)
+            Case "PUP SOUVENIR"
+                Return (14.598464567530128, 121.01118784605971)
+            Case "FREEDOM PARK"
+                Return (14.597800088742346, 121.01098533928109)
+            Case "FLAGPOLE"
+                Return (14.597663818429254, 121.01108122824888)
+            Case "GRANDSTAND"
+                Return (14.598038139608716, 121.01149807139221)
+            Case "COMMUNITY BUILDING"
+                Return (14.598106947270642, 121.01256398240135)
+            Case "OVAL"
+                Return (14.59812252099338, 121.01207045595351)
+            Case "CHAPEL"
+                Return (14.597178614670304, 121.01142413841909)
+            Case "NUTRITION AND FOOD SCIENCE BUILDING"
+                Return (14.596854160488054, 121.01170040594265)
+            Case "EAST WING"
+                Return (14.596701017950254, 121.01103790032421)
+            Case "CAMPUS DEVELOPMENT AND MAINTENANCE BUILDING"
+                Return (14.596337628434911, 121.01117469296958)
+            Case "PUP STA.MESA FERRY"
+                Return (14.596158529103903, 121.01080991255159)
+            Case "GENERATOR FACILITY"
+                Return (14.596262354821967, 121.01057924257542)
+            Case "SOUTH WING"
+                Return (14.596571236045397, 121.01071871743883)
+            Case "WEST WING"
+                Return (14.596921646986255, 121.0103700302746)
+            Case "MAIN BUILDING"
+                Return (14.597085171901, 121.01071603522988)
+            Case "CANTEEN SAMPAGUITA BLDG"
+                Return (14.596797056498255, 121.00986041056586)
+            Case "STUDENT CANTEEN"
+                Return (14.59695019896906, 121.0097853087151)
+            Case "CHARLIE DEL ROSARIO HALL"
+                Return (14.597126702023523, 121.009608282924)
+            Case "LABORATORY HS"
+                Return (14.59737069130682, 121.00927300680456)
+            Case "PRINTING PRESS BLDG"
+                Return (14.597373286939543, 121.00855953920696)
+            Case "PROPERTY BLDG"
+                Return (14.597775609100268, 121.0089296840429)
+            Case "WATER PUMP FACILITY"
+                Return (14.597853477820193, 121.00908256995336)
+            Case "UNDERGROUND TANK"
+                Return (14.597819734711614, 121.00931323992356)
+            Case "NINOY A. LIBRARY"
+                Return (14.597814543466114, 121.00966997371745)
+            Case "LAGOON"
+                Return (14.597676975351243, 121.01038075909069)
+            Case "AMPHITHEATRE"
+                Return (14.597414817007376, 121.01021177992649)
+            Case "PE BUILDING"
+                Return (14.59844982152952, 121.01004078911747)
+            Case "TAHANAN NG ALUMNI"
+                Return (14.598509520700963, 121.01007565783389)
+            Case Else
+                Return (0, 0)
+        End Select
+    End Function
+
+    Private Function CalculateEuclideanDistance(vertex1 As String, vertex2 As String) As Integer
+        ' Assuming the graph stores the coordinates of vertices as (x, y) pairs
+        Dim vertex1Coordinates As (x As Integer, y As Integer) = GetVertexCoordinates(vertex1)
+        Dim vertex2Coordinates As (x As Integer, y As Integer) = GetVertexCoordinates(vertex2)
+
+        ' Calculate the Euclidean distance using the formula
+        Dim dx As Integer = vertex2Coordinates.x - vertex1Coordinates.x
+        Dim dy As Integer = vertex2Coordinates.y - vertex1Coordinates.y
+        Dim distance As Integer = CInt(Math.Sqrt(dx * dx + dy * dy))
+
+        ' Return the Euclidean distance
+        Return distance
+    End Function
+
+
+    Public Function FindShortestPath(startVertex As String, endVertex As String) As (List(Of String), Double)
+        Dim openSet As New SortedSet(Of (String, Integer))(Comparer(Of (String, Integer)).Create(Function(x, y) x.Item2.CompareTo(y.Item2)))
+        Dim distances As New Dictionary(Of String, Double)()
+        Dim previous As New Dictionary(Of String, String)()
+
+        distances.Add(startVertex, 0)
+        openSet.Add((startVertex, 0))
+
+        While openSet.Count > 0
+            Dim currentVertex As String = openSet.Min.Item1
+            openSet.Remove(openSet.Min)
+
+            If currentVertex = endVertex Then
+                ' Reconstruct the path
+                Dim path As New List(Of String)()
+                Dim node As String = endVertex
+
+                While previous.ContainsKey(node)
+                    path.Insert(0, node)
+                    node = previous(node)
+                End While
+
+                path.Insert(0, startVertex)
+                Return (path, distances(endVertex))
+            End If
+
+            For Each neighbor As String In vertices(currentVertex).Keys
+                Dim distance As Integer = vertices(currentVertex)(neighbor)
+                Dim totalDistance As Integer = distances(currentVertex) + distance
+
+                If Not distances.ContainsKey(neighbor) OrElse totalDistance < distances(neighbor) Then
+                    distances(neighbor) = totalDistance
+                    previous(neighbor) = currentVertex
+
+                    ' Calculate the Euclidean distance as the heuristic
+                    Dim heuristicDistance As Integer = CalculateEuclideanDistance(neighbor, endVertex)
+
+                    ' Calculate the f(n) value using f(n) = g(n) + h(n)
+                    Dim priority As Integer = totalDistance + heuristicDistance
+
+                    ' Instead of adding a new (neighbor, priority) pair, update the priority if the neighbor is already in the openSet
+                    Dim foundNeighbor = openSet.FirstOrDefault(Function(n) n.Item1 = neighbor)
+                    If foundNeighbor.Item1 IsNot Nothing AndAlso priority < foundNeighbor.Item2 Then
+                        openSet.Remove(foundNeighbor)
+                    End If
+
+                    openSet.Add((neighbor, priority))
+                End If
+            Next
+        End While
+
+        Return (Nothing, 0)
+    End Function
+End Class

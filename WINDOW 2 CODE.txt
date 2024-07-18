@@ -1,0 +1,12 @@
+Public Class Form2
+    Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
+        ' Calculate the new position of the "Back" button based on the form size
+        btnBack.Location = New Point(10, ClientSize.Height - btnBack.Height - 10) ' Adjust the X and Y values as needed
+    End Sub
+
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+        Form1.Show()
+        Me.Hide()
+    End Sub
+End Class
+

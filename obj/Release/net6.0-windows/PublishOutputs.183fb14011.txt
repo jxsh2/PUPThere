@@ -1,0 +1,12 @@
+C:\Users\Josh\Desktop\PUPThere.exe
+C:\Users\Josh\Desktop\runtimes\win-x86\native\WebView2Loader.dll
+C:\Users\Josh\Desktop\runtimes\win-x64\native\WebView2Loader.dll
+C:\Users\Josh\Desktop\runtimes\win-arm64\native\WebView2Loader.dll
+C:\Users\Josh\Desktop\PUPThere.dll
+C:\Users\Josh\Desktop\PUPThere.deps.json
+C:\Users\Josh\Desktop\PUPThere.runtimeconfig.json
+C:\Users\Josh\Desktop\PUPThere.pdb
+C:\Users\Josh\Desktop\FontAwesome.Sharp.dll
+C:\Users\Josh\Desktop\Microsoft.Web.WebView2.Core.dll
+C:\Users\Josh\Desktop\Microsoft.Web.WebView2.WinForms.dll
+C:\Users\Josh\Desktop\Microsoft.Web.WebView2.Wpf.dll
